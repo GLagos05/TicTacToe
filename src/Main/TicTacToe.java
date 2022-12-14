@@ -58,14 +58,18 @@ public class TicTacToe implements Runnable {
 
 	/*
 	 * Forma tablero:
-	 * 0, 1, 2 
-	 * 3, 4, 5 
+	 * 0, 1, 2
+	 * 3, 4, 5
 	 * 6, 7, 8
 	 *
 	 */
+
+	//Método main, ejecuta el TicTacToe
 	public static void main(String[] args) {
 		TicTacToe ticTacToe = new TicTacToe();
 	}
+
+	//Contructor de la clase TicTacToe
 	public TicTacToe() {
 		/*
 		* HOLA PROFESOR SI VE ESTO LA FORMA DE USARLO EN WINDOWS ES ABRIR 2 CMD
@@ -78,6 +82,8 @@ public class TicTacToe implements Runnable {
 		*
 		*
 		* */
+
+		//se ingresan el ip y el puerto de manera manual
 		System.out.println("Coloca la IP: ");
 		ip = scanner.nextLine();
 		System.out.println("Ingrese el puerto: ");
@@ -86,9 +92,10 @@ public class TicTacToe implements Runnable {
 			System.out.println("El puerto que ingresaste es invalido, por favor ingresar otro: ");
 			port = scanner.nextInt();
 		}
-
+		//se cargan las imágenes del tablero
 		loadImages();
 
+		//se ejecuta un painter
 		painter = new Painter();
 		painter.setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
@@ -103,9 +110,12 @@ public class TicTacToe implements Runnable {
 		frame.setResizable(false);
 		frame.setVisible(true);
 
+		//se genera un hilo correspondiente al TicTacToe
 		thread = new Thread(this, "TicTacToe");
 		thread.start();
 	}
+
+	//Método run, ejecuta las jugadas
 	public void run() {
 		while (true) {
 			tick();
@@ -117,6 +127,8 @@ public class TicTacToe implements Runnable {
 
 		}
 	}
+
+	//Método render, genera los gráficos visuales del juego
 	private void render(Graphics g) {
 		g.drawImage(board, 0, 0, null);
 		if (unableToCommunicateWithOpponent) {
@@ -178,6 +190,8 @@ public class TicTacToe implements Runnable {
 			g.drawString(waitingString, WIDTH / 2 - stringWidth / 2, HEIGHT / 2);
 		}
 	}
+
+	//Método tick, verifica el estado de la jugada
 	private void tick() {
 		if (errors >= 10) unableToCommunicateWithOpponent = true;
 
@@ -195,6 +209,8 @@ public class TicTacToe implements Runnable {
 			}
 		}
 	}
+
+	//Método checkForWin, verifica si el usuario ganó la partida
 	private void checkForWin() {
 		for (int i = 0; i < wins.length; i++) {
 			if (circle) {
@@ -212,6 +228,8 @@ public class TicTacToe implements Runnable {
 			}
 		}
 	}
+
+	//Método checkForEnemyWin, verifica si el otro usuario ganó la partida
 	private void checkForEnemyWin() {
 		for (int i = 0; i < wins.length; i++) {
 			if (circle) {
@@ -229,6 +247,8 @@ public class TicTacToe implements Runnable {
 			}
 		}
 	}
+
+	//Método checkForTie, verifica si hubo un empate entre los usuarios
 	private void checkForTie() {
 		for (int i = 0; i < spaces.length; i++) {
 			if (spaces[i] == null) {
@@ -237,6 +257,8 @@ public class TicTacToe implements Runnable {
 		}
 		tie = true;
 	}
+
+	//Método connect, se conecta al servidor con la ip y el puerto especificado
 	private boolean connect() {
 		try {
 			socket = new Socket(ip, port);
@@ -250,6 +272,8 @@ public class TicTacToe implements Runnable {
 		System.out.println("Conexion exitosa con el server.");
 		return true;
 	}
+
+	//Método loadImages, carga las imágenes del juego
 	private void loadImages() {
 		try {
 			board = ImageIO.read(getClass().getResourceAsStream("/board.png"));
@@ -261,6 +285,8 @@ public class TicTacToe implements Runnable {
 			e.printStackTrace();
 		}
 	}
+
+	//clase Painter la cual se usa para crear la ventana
 	private class Painter extends JPanel implements MouseListener {
 		private static final long serialVersionUID = 1L;
 
